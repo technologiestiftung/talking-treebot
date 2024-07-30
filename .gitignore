@@ -1,5 +1,6 @@
 # API credentials
 .env
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -12,6 +13,9 @@ __pycache__/
 # enviro+ code examples
 examples/
 
+# exclude virtual environment
+treebot-env/
+
 # Distribution / packaging
 .Python
 build/
@@ -20,8 +24,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-bin/
 lib64/
 parts/
 sdist/
