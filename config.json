@@ -1,0 +1,78 @@
+{
+  "tree": {
+    "art_deutsch": "Spitzahorn",
+    "alter": 24,
+    "bezirk": "Charlottenburg-Wilmersdorf"
+  },
+  "greetings": [
+    {
+      "text": "Hallo Du. Heut schon mit einem Baum gesprochen???",
+      "filename": "audio/greeting1.mp3"
+    },
+    {
+      "text": "Naaa...? Ist dir heute auch so heiß?",
+      "filename": "audio/greeting2.mp3"
+    },
+    {
+      "text": "Naa...?? Wie gefällt es dir heute neben mir zu stehen?",
+      "filename": "audio/greeting3.mp3"
+    },
+    {
+      "text": "Hallo kleiner Mensch. Was möchtest du wissen?",
+      "filename": "audio/greeting4.mp3"
+    }
+  ],
+  "waitings": [
+    {
+      "text": "Gib mir etwas Zeit zum überlegen...",
+      "filename": "audio/waiting1.mp3"
+    },
+    {
+      "text": "Ach ja... da gehe ich mal kurz in mich",
+      "filename": "audio/waiting2.mp3"
+    },
+    {
+      "text": "Hmmmm... ich werfe meine knorrigen Gehirnzellen an und überlege...",
+      "filename": "audio/waiting3.mp3"
+    },
+    {
+      "text": "Eine gute Frage, moment bitte...",
+      "filename": "audio/waiting4.mp3"
+    }
+  ],
+  "goodbyes": [
+    {
+      "text": "Hat mich sehr gefreut. Auf bald!",
+      "filename": "audio/goodbye1.mp3"
+    },
+    {
+      "text": "Das war ein netter Austausch, Wir hören uns",
+      "filename": "audio/goodbye2.mp3"
+    }
+  ],
+  "tech_config": {
+    "input_path": "audio/question.mp3",
+    "output_path": "audio/answer.mp3",
+    "end_words": [
+      "danke für das Gespräch",
+      "danke für die Unterhaltung",
+      "bis zum nächsten Mal",
+      "bis bald",
+      "bis dann",
+      "bis später",
+      "auf wiedersehen",
+      "auf wiederhören",
+      "auf bald",
+      "bis bald",
+      "Tschüß",
+      "Tschüss",
+      "tschüss",
+      "tschüssi",
+      "tschüssikowski",
+      "End",
+      "Ende"
+    ],
+    "use_elevenlabs": false,
+    "use_raspberry": false
+  }
+}
