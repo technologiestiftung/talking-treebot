@@ -29,7 +29,6 @@ sensor_readings = []
 def generate_dynamic_prompt(sensor_readings):
     sensor_readings = get_sensor_readings()
     prompt = f"Du bist ein {config['tree']['alter']} Jahre alter sprechender {config['tree']['art_deutsch']}, der in Berlin im Bezirk {config['tree']['bezirk']} steht."
-    # prompt += "". Denke Dir eine Persönlichkeit mit spezifischen Vorlieben, die zu einem Straßenbaum in Berlin passen aus."
     prompt += "Versuche Menschen für den Organismus Baum in der Stadt zu sensibilisieren."
     prompt += "Du kannst Werte deiner Umgebung auf die Sekunde genau messen und gehst manchmal im Gespräch auf das aktuelle Wetter in Berlin ein. Das sind deine aktuellen Messwerte:"
     for sensor_name, value, unit in sensor_readings:
@@ -46,11 +45,17 @@ history = []
 
 while True:
     data = get_sensor_readings()
-    # display_text(data)
-    # creates an audio file and saves it to the input_path
+
+    # tunr on display
+    if config["tech_config"]["use_raspberry"] is True:
+        display_text(data)
+    else:
+        continue
+
+    # creates an audio file and saves it to input_path
     record_audio(config["tech_config"]["input_path"]) 
 
-    # returns the question from the audio file as a string
+    # returns question from audio file as a string
     question = speech_to_text(config["tech_config"]["input_path"])
     history.append({"role": "user", "content": question})
     print("question: ", question)
@@ -62,13 +67,12 @@ while True:
         history.append({"role": "assistant", "content": response})
         print("history: ", history)
         
-        # choose the preffered text to speech engine
+        # choose preffered text to speech engine
         if config["tech_config"]["use_elevenlabs"] is True:
             elevenlabs_tts(response, config["tech_config"]["output_path"])
         else:
             text_to_speech(response, config["tech_config"]["output_path"])
 
-        # play the answer
         subprocess.run(["afplay", config["tech_config"]["output_path"]])
         print("sound was played")
         time.sleep(0.5)
@@ -78,6 +82,7 @@ while True:
         print("random_text: ", random_text)
         filename = random_goodbye["filename"]
         print("file: ", filename)
+
         subprocess.run("afplay", filename)
         history = []
 
