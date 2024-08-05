@@ -6,40 +6,14 @@ import time
 CHUNK = 1024 # size to capture audio data per read
 RATE = 22050  # samples per second
 
-def calculate_threshold(duration=2, fs=22050, buffer_value=100):
-    import numpy as np
-    import sounddevice as sd
-
-    print("Recording ambient noise...")
-    # Create a buffer to hold the recorded audio data
-    ambient_data = np.zeros(int(duration * fs), dtype=np.int16)
-    with sd.InputStream(samplerate=fs, dtype='int16', channels=1, blocksize=CHUNK) as stream:
-        # Read audio data in chunks and store it in the buffer
-        for i in range(0, len(ambient_data), CHUNK):
-            data, _ = stream.read(CHUNK)
-            # Adjust the size of the last chunk to fit the remaining space
-            if i + CHUNK > len(ambient_data):
-                # Calculate remaining space
-                remaining = len(ambient_data) - i
-                # Resize the data to fit the remaining space
-                ambient_data[i:i+remaining] = np.frombuffer(data, dtype=np.int16)[:remaining]
-            else:
-                ambient_data[i:i+CHUNK] = np.frombuffer(data, dtype=np.int16)
-
-    # Calculate ambient noise volume
-    ambient_volume = np.abs(ambient_data).mean()
-
-    # Calculate and return THRESHOLD
-    return ambient_volume + buffer_value
-
-
-def record_audio(filename):
-    THRESHOLD = calculate_threshold()
+def record_audio(filename, latest_threshold):
+    THRESHOLD = latest_threshold
     SILENCE_LIMIT = 1.4  # Number of seconds of silence before stopping the recording
     TIMEOUT_AFTER_SECONDS = 10  # Maximum recording time in seconds
     CONSECUTIVE_SILENT_FRAMES_THRESHOLD = 3  # Number of consecutive silent frames before counting one real silence frame
     IS_TIMEOUT = False
 
+    print("threshold: ", THRESHOLD)
     # Calculate the number of silent chunks needed to reach the silence limit
     silent_chunks_needed = int((SILENCE_LIMIT * RATE) / CHUNK)
     print(f"Silence threshold in chunks: {silent_chunks_needed}")

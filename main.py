@@ -6,13 +6,14 @@ import subprocess
 from openai_api import speech_to_text, query_chatgpt, text_to_speech
 from elevenlabs_tts import elevenlabs_tts
 from recording import record_audio
+from ambient import calculate_threshold
 
 with open ("config.json", "r") as file:
     config = json.load(file)
 
 print("use_raspberry:", config["tech_config"]["use_raspberry"])
 
-# +++ START Prompt hustle +++
+# +++ prompt hustle +++
 if config["tech_config"]["use_raspberry"] is True:
     from all_sensors import get_sensor_readings, display_text
     sensor_readings = get_sensor_readings()
@@ -39,21 +40,23 @@ def generate_dynamic_prompt(sensor_readings):
     return prompt
 
 prompt = generate_dynamic_prompt(sensor_readings)
-# +++ END Prompt hustle  +++
+# +++ END prompt hustle  +++
 
 history = []
 
 while True:
     data = get_sensor_readings()
 
-    # tunr on display
+    #turn on display
     if config["tech_config"]["use_raspberry"] is True:
         display_text(data)
     else:
-        continue
+        pass
 
     # creates an audio file and saves it to input_path
-    record_audio(config["tech_config"]["input_path"]) 
+    latest_threshold = calculate_threshold()
+    print(f"latest_threshold: {latest_threshold}")
+    record_audio(config["tech_config"]["input_path"], latest_threshold) 
 
     # returns question from audio file as a string
     question = speech_to_text(config["tech_config"]["input_path"])
