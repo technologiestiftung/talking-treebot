@@ -1,11 +1,10 @@
 import numpy as np
 import sounddevice as sd
-import time
 
 CHUNK = 1024 # size to capture audio data per read
 RATE = 22050  # samples per second
 
-def calculate_threshold(duration=10, fs=22050, buffer_value=100):
+def calculate_threshold(duration=10, fs=22050, buffer_value=10):
     print("Recording ambient noise...")
     # Create a buffer to hold the recorded audio data
     ambient_data = np.zeros(int(duration * fs), dtype=np.int16)

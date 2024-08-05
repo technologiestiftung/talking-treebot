@@ -6,7 +6,6 @@ import subprocess
 from openai_api import speech_to_text, query_chatgpt, text_to_speech
 from elevenlabs_tts import elevenlabs_tts
 from recording import record_audio
-from ambient import calculate_threshold
 
 with open ("config.json", "r") as file:
     config = json.load(file)
@@ -54,9 +53,7 @@ while True:
         pass
 
     # creates an audio file and saves it to input_path
-    latest_threshold = calculate_threshold()
-    print(f"latest_threshold: {latest_threshold}")
-    record_audio(config["tech_config"]["input_path"], latest_threshold) 
+    record_audio(config["tech_config"]["input_path"]) 
 
     # returns question from audio file as a string
     question = speech_to_text(config["tech_config"]["input_path"])
