@@ -162,43 +162,15 @@ def get_sensor_readings():
     #    reading = float(reading.pm_ug_per_m3(2.5))
     #    pm25 = reading
     #    sensor_data.append(("PM25", pm25, "ug/m3"))
-    
-    return sensor_data
 
-def transform_sensor_readings_for_chatgpt(sensor_data):
-    transformed_data = {}
-    # Iterate through each sensor reading in the array of tuples
-    for sensor_name, value, unit in sensor_data:
-        # Transform each reading based on its sensor name
-        if sensor_name == 'Temperature':
-            transformed_data["Temperatur"] = f"{value} Grad Celsius"
-        elif sensor_name == 'Pressure':
-            transformed_data["Pressure"] = f"{value} Hektopascal"
-        elif sensor_name == 'Humidity':
-            transformed_data["Humidity"] = f"{value} Prozent"
-        elif sensor_name == 'Light':
-            transformed_data["Light"] = f"{value} Lux"
-        elif sensor_name == 'Oxidised':
-            transformed_data["Oxidised"] = f"{value} Kiloohm"
-        elif sensor_name == 'Reduced':
-            transformed_data["Reduced"] = f"{value} Kiloohm"
-        elif sensor_name == 'NH3':
-            transformed_data["NH3"] = f"{value} Kiloohm"
-        elif sensor_name == 'PM1':
-            transformed_data["PM1"] = f"{value} Mikrogramm pro Kubikmeter"
-        elif sensor_name == 'PM10':
-            transformed_data["PM10"] = f"{value} Mikrogramm pro Kubikmeter"
-        elif sensor_name == 'PM25':
-            transformed_data["PM25"] = f"{value} Mikrogramm pro Kubikmeter"
-    
-    return transformed_data
+    return sensor_data
 
 if __name__ == "__main__":
     try:
         while True:
             data = get_sensor_readings()
             display_text(data)
-            print("transformed_data:", transform_sensor_readings_for_chatgpt(data))
+            print("sensor_data:", data)
     except KeyboardInterrupt:
         pass
     finally:
