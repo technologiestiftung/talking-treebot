@@ -3,7 +3,6 @@ import numpy as np
 import soundfile as sf
 import time
 import threading
-import json
 from ambient import calculate_threshold
 
 VOICE_DELTA = 850 # Minimum volume difference to detect voice; adjust according to your microphone sensitivity
@@ -35,10 +34,8 @@ def record_audio(filename):
     CONSECUTIVE_SILENT_FRAMES_THRESHOLD = 3  # Number of consecutive silent frames before counting one real silence frame
     IS_TIMEOUT = False
 
-    print("threshold: ", THRESHOLD)
     # Calculate the number of silent chunks needed to reach the silence limit
     silent_chunks_needed = int((SILENCE_LIMIT * RATE) / CHUNK)
-    print(f"Silence threshold in chunks: {silent_chunks_needed}")
 
     # Initialize sounddevice stream
     stream = sd.InputStream(samplerate=RATE, dtype='int16', channels=1, blocksize=CHUNK)
@@ -52,7 +49,7 @@ def record_audio(filename):
         # Use the result
             with lock:
                 THRESHOLD = ambient_threshold
-                print(f"Using ambient_threshold: {ambient_threshold}")
+                print(f"Using new ambient_threshold: {ambient_threshold}")
             # Reset the event for the next calculation
             calculation_done.clear()
 
@@ -60,7 +57,6 @@ def record_audio(filename):
         data = np.frombuffer(data, dtype=np.int16)
         volume = np.abs(data).mean()
         print(f"Checking for speech... Volume: {volume}")
-        print(f"Threshold: {THRESHOLD}")
         if volume > THRESHOLD + VOICE_DELTA:
             print("Speech detected, starting to record...")
             break
