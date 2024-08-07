@@ -41,7 +41,7 @@ def query_chatgpt(question, prompt, messages):
     all_messages = [{"role": "system", "content": prompt}] + messages
 
     response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o-mini",
         temperature=0.85, 
         messages=all_messages
     )
