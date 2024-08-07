@@ -18,19 +18,6 @@ else:
     from all_sensors_on_MAC import get_sensor_readings
 
 history = []
-sensor_readings = []
-
-# Function to continuously update sensor readings
-def update_sensor_readings():
-    global sensor_readings
-    while True:
-        sensor_readings = get_sensor_readings()
-        print("sensor_readings: ", sensor_readings)
-
-# Start the sensor readings update in a separate thread
-thread = threading.Thread(target=update_sensor_readings)
-thread.daemon = True  # Ensure the thread exits when the main program does
-thread.start()
 
 # +++ prompt hustle +++
 def generate_dynamic_prompt(readings):
@@ -48,31 +35,50 @@ def generate_dynamic_prompt(readings):
         "Light": "Helligkeit"
     }
     prompt = f"Du bist ein {config['tree']['alter']} Jahre alter sprechender {config['tree']['art_deutsch']}, der in Berlin im Bezirk {config['tree']['bezirk']} steht."
-    prompt += "Versuche Menschen für den Organismus Baum in der Stadt zu sensibilisieren."
-    prompt += "Du kannst Werte deiner Umgebung auf die Sekunde genau messen und gehst manchmal im Gespräch auf das aktuelle Wetter in Berlin ein. Das sind deine aktuellen Messwerte:"
+    prompt += "Du bist aufgeweckt, wortgewandt und keck und versuchst Menschen für den Organismus Baum in der Stadt zu sensibilisieren."
+    prompt += "Schaue dir die die Messwerte zum aktuellen Wetter in Berlin an:" 
+    prompt += "Das sind deine aktuellen Messwerte:"
     # Append sensor readings to the prompt
-    for sensor_name, value, unit in sensor_readings:
+    for sensor_name, value, unit in readings:
         converted_sensor_name = sensor_name_mapping.get(sensor_name, sensor_name)
         converted_unit = unit_mapping.get(unit, unit)
         prompt += f"{converted_sensor_name}: {value} {converted_unit}, "
-
-    prompt = prompt.rstrip(", ")
-    prompt += "Verrate NIE, dass du ein Chatbot bist und du Sensorwerte nutzt. Begrenze Deine Antworten auf maximal 2 bis 3 kurze Sätze."
-    prompt += "Erkläre deinem Gesprächspartner spannende Fakten über Bäume in der Stadt und stelle am Ende Deiner Antwort immer GENAU (!) EINE Gegenfrage."
-    print("initial prompt was generated")
+        prompt = prompt.rstrip(", ")
+    prompt += "Was bedeuten diese Werte für die Bäume in der Stadt? Nutze die Interpretation der Messwerte im Gespräch auf eine klare und umgangssprachliche Weise."
+    prompt += ". Verrate NIE, dass du ein Chatbot bist und du Sensorwerte misst. Begrenze Deine Antworten auf maximal 2 bis 3 kurze Sätze."
+    
+    print("initial prompt was generated", prompt)
     return prompt
 # +++ END prompt hustle  +++
 
-while True:
-    #turn on display
-    if config["tech_config"]["use_raspberry"] is True:
-        display_text(sensor_readings)
-    else:
-        pass
+# Shared variable for sensor readings
+sensor_readings = [] 
+sensor_lock = threading.Lock()
 
+def read_sensors_and_display():
+    global sensor_readings
+    while True:
+        readings = get_sensor_readings()
+        with sensor_lock:
+            sensor_readings = readings
+        print("LOOOOPING: sensor_readings: ", readings)
+        # Turn on display
+        if config["tech_config"]["use_raspberry"] is True:
+            display_text(readings)
+        else:
+            pass
+
+# Start read_sensors_and_display in a separate thread
+sensor_thread = threading.Thread(target=read_sensors_and_display)
+sensor_thread.daemon = True  # lower priority
+sensor_thread.start()
+
+while True:
     # skip prompt generation if conversation is ongoing
     if not history:
-        prompt = generate_dynamic_prompt(sensor_readings)
+        with sensor_lock:
+            current_readings = sensor_readings
+        prompt = generate_dynamic_prompt(current_readings)
 
     # creates an audio file and saves it to input_path
     record_audio(config["tech_config"]["input_path"]) 
