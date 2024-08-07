@@ -113,9 +113,9 @@ while True:
         print("file: ", filename)
 
         if config["tech_config"]["use_raspberry"] is True:
-            subprocess.run(["mpg123", config["tech_config"]["output_path"]])
+            subprocess.run(["mpg123", filename])
         else:
-            subprocess.run(["afplay", config["tech_config"]["output_path"]])
+            subprocess.run(["afplay", filename])
         history = []
 
 if __name__ == "__main__":
