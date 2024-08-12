@@ -12,7 +12,7 @@ client = ElevenLabs(
 
 def elevenlabs_tts(transcription, filepath):
     response = client.text_to_speech.convert(
-        voice_id="BgNdy2mYTwTmC5nWQ0rx", # Frederick
+        voice_id="KqY0pr2VOkd9SVIHMnwM", # Matilda
         optimize_streaming_latency="0",
         output_format="mp3_22050_32",  # Use MP3 format with 22.05kHz sample rate at 32kbps
         text=transcription,

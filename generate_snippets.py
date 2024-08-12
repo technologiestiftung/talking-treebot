@@ -5,7 +5,7 @@ def generate_audio_snippets(config_file):
     with open(config_file, 'r') as file:
         config = json.load(file)
 
-    for category in ['greetings', 'waitings', 'goodbyes']:
+    for category in ['idle', 'waitings', 'goodbyes']:
         for item in config[category]:
             elevenlabs_tts(item['text'], item['filename'])
 

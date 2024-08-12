@@ -1,43 +1,59 @@
 {
   "tree": {
-    "art_deutsch": "Spitzahorn",
-    "alter": 24,
+    "art_deutsch": "Trompetenbaum",
+    "alter": 40,
     "bezirk": "Charlottenburg-Wilmersdorf"
   },
-  "greetings": [
-    {
-      "text": "Hallo Du. Heut schon mit einem Baum gesprochen???",
-      "filename": "audio/greeting1.mp3"
-    },
-    {
-      "text": "Naaa...? Ist dir heute auch so heiß?",
-      "filename": "audio/greeting2.mp3"
-    },
-    {
-      "text": "Naa...?? Wie gefällt es dir heute neben mir zu stehen?",
-      "filename": "audio/greeting3.mp3"
-    },
-    {
-      "text": "Hallo kleiner Mensch. Was möchtest du wissen?",
-      "filename": "audio/greeting4.mp3"
-    }
-  ],
   "waitings": [
     {
-      "text": "Gib mir etwas Zeit zum überlegen...",
+      "text": "Mhhh ich werfe meine knorrigen Gehirnzellen an und überlege…",
       "filename": "audio/waiting1.mp3"
     },
     {
-      "text": "Ach ja... da gehe ich mal kurz in mich",
+      "text": "Moment mal, lass mich kurz meine Blätter sortieren... Ah, da ist es!",
       "filename": "audio/waiting2.mp3"
     },
     {
-      "text": "Hmmmm... ich werfe meine knorrigen Gehirnzellen an und überlege...",
+      "text": "Puh, da hängt ein Gedanke zwischen meinen Zweigen... Einen Augenblick, ich finde ihn gleich!",
       "filename": "audio/waiting3.mp3"
     },
     {
-      "text": "Eine gute Frage, moment bitte...",
+      "text": "Hmmm, lass mich kurz nachdenken… Meine Wurzeln sind etwas verknotet.",
       "filename": "audio/waiting4.mp3"
+    },
+    {
+      "text": "Lass mich mal tief in meinen Jahresringen graben... Da ist es!",
+      "filename": "audio/waiting5.mp3"
+    }
+  ],
+  "idle": [
+    {
+      "text": "Hey, hast du mal eine Minute für einen alten Baum? Ich hab' hier ein paar knackige Gedanken für dich!",
+      "filename": "audio/idle1.mp3"
+    },
+    {
+      "text": "Na, haste Zeit für 'nen juten alten Schwatz mit 'nem Ur-Berliner? Ick hab Geschichten, die sind so alt wie die Stadt!",
+      "filename": "audio/idle2.mp3"
+    },
+    {
+      "text": "Die BVG hat schon wieder Signalstörungen. Nervt mich sehr... dich auch?",
+      "filename": "audio/idle3.mp3"
+    },
+    {
+      "text": "Boah ey, dieses Wetter schon wieder! Das war früher alles anders. Da gab es noch richtige Jahreszeiten. Oder was meinst du?",
+      "filename": "audio/idle4.mp3"
+    },
+    {
+      "text": "Ick sag dir, der Berliner Sommer ist ein Mythos. Hier regnet's höchstens in Etappen.",
+      "filename": "audio/idle5.mp3"
+    },
+    {
+      "text": "Hallo Du. Heut schon mit einem Baum gesprochen???",
+      "filename": "audio/idle6.mp3"
+    },
+    {
+      "text": "Naaa...? Heute auch schon so viel gesoffen? Ich bins, dein Baum!",
+      "filename": "audio/idle7.mp3"
     }
   ],
   "goodbyes": [
@@ -46,8 +62,20 @@
       "filename": "audio/goodbye1.mp3"
     },
     {
-      "text": "Das war ein netter Austausch, Wir hören uns",
+      "text": "Das war ein netter Austausch, wir hören uns.",
       "filename": "audio/goodbye2.mp3"
+    },
+    {
+      "text": "Ok! Ich bleib' standhaft, du aber auch. Wir quatschen bald wieder. Ciao!",
+      "filename": "audio/goodbye3.mp3"
+    },
+    {
+      "text": "Ich wieg' mich im Wind und warte auf dich. Bis dann!",
+      "filename": "audio/goodbye4.mp3"
+    },
+    {
+      "text": "Netter plausch! Schau gerne bei uns im Kiezlabor nebenan vorbei. Tschüss!",
+      "filename": "audio/goodbye5.mp3"
     }
   ],
   "tech_config": {
@@ -72,7 +100,7 @@
       "End",
       "Ende"
     ],
-    "use_elevenlabs": false,
+    "use_elevenlabs": true,
     "use_raspberry": false
   }
 }
