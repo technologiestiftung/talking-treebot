@@ -63,7 +63,6 @@ def read_sensors_and_display():
         readings = get_sensor_readings()
         with sensor_lock:
             sensor_readings = readings
-        print("LOOOOPING: sensor_readings: ", readings)
         # Turn on display
         if config["tech_config"]["use_raspberry"] is True:
             display_text(readings)
@@ -90,8 +89,24 @@ while True:
     history.append({"role": "user", "content": question})
 
     end_words = config["tech_config"]["end_words"]
+    if config["tech_config"]["use_raspberry"] is True:
+        subprocess.run(["mpg123", "audio/understood.mp3"])
+    else:
+        subprocess.run(["afplay", "audio/understood.mp3"])
+
     if not any(word.lower() in question.lower() for word in end_words):
         response, full_api_response = query_chatgpt(question, prompt, history)
+
+        # play waiting sound
+        random_waiting = random.choice(config["waitings"])
+        filename_waiting = random_waiting["filename"]
+        print("file: ", filename_waiting)
+
+        if config["tech_config"]["use_raspberry"] is True:
+            subprocess.run(["mpg123", filename_waiting])
+        else:
+            subprocess.run(["afplay", filename_waiting])
+
         history.append({"role": "assistant", "content": response})
         print("history: ", history)
         
