@@ -91,7 +91,8 @@ Navigate into the folder `cd talkding-treebot` and run `pip install -r requireme
 2. Install `venv` and create a virtual environment: `python3.11 -m venv treebot-env` and activate it `source treebot-env/bin/activate`
 3. Install `pip` and install missing packages with `pip install [the-missing-package]` or simply run `pip install -r requirements.txt`
 
-##2 How to interact with my little Pi?
+## How to interact with my little Pi?
+
 An older version of this project was using a headless OS (without screen, keyboard, mouse) which is why we needed to connect to the Raspberry via SSH.
 
 1. run `ping raspberrypi`
