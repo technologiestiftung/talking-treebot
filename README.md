@@ -5,8 +5,8 @@ A mobile chatbot essentially used to make citizens interact with trees and foste
 We use `Python 3.11.2` with `pip` as package manager and `virtualenv` to create isolate virtual environments.
 
 <p float="left">
-        <img width=600; alt="Treebot Tech" src="https://github.com/user-attachments/assets/62e1056b-88a0-40ff-83bd-b3f14606476d">
-        <img width=340; alt="Treebot Talk" src="https://github.com/user-attachments/assets/035d8ff8-405a-4204-88f1-87f31c5d279f">
+        <img width=58%; alt="Treebot Tech" src="https://github.com/user-attachments/assets/62e1056b-88a0-40ff-83bd-b3f14606476d">
+        <img width=33%; alt="Treebot Talk" src="https://github.com/user-attachments/assets/035d8ff8-405a-4204-88f1-87f31c5d279f">
 </p>
 
 
