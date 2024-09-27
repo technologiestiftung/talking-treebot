@@ -4,6 +4,12 @@ A mobile chatbot essentially used to make citizens interact with trees and foste
 
 We use `Python 3.11.2` with `pip` as package manager and `virtualenv` to create isolate virtual environments.
 
+<p float="left">
+        <img width=600; alt="Treebot Tech" src="https://github.com/user-attachments/assets/62e1056b-88a0-40ff-83bd-b3f14606476d">
+        <img width=340; alt="Treebot Talk" src="https://github.com/user-attachments/assets/035d8ff8-405a-4204-88f1-87f31c5d279f">
+</p>
+
+
 **⚠️ Update: We noticed that the multi-threading approach and playing back sounds on a Raspberry Pi Zero is a too intensive process, meaning that all the tasks will be performed in a very slow manner. Thus, we highly recommend, to switch on another Raspberry Pi with more RAM (e.g. Raspi v4) and get sensor readings from a programmatic approach (manually per day) or by configuring a BME280 sensor.**
 
 ## Hardware
