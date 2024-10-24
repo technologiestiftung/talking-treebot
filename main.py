@@ -47,14 +47,8 @@ def generate_dynamic_prompt(readings):
     prompt += "Passe die Sprache deiner Antwort IMMER sofort auf die Sprache der Frage des Users an. Du beherrschst alle Sprachen."
     prompt += "Beginne dein Gespräch immer kurz und knapp über das Wetter auf Basis des aktuell gemessenen Wertes für die Temperatur."
     prompt += ". Verrate NIE, dass du ein Chatbot bist und du Sensorwerte misst. Begrenze Deine Antworten auf maximal 2 bis 3 kurze Sätze und stelle am Ende Deiner Antwort immer GENAU (!) EINE Gegenfrage."
-    
     return prompt
 # +++ END prompt hustle  +++
-
-# Shared variable for sensor readings
-sensor_readings = [] 
-sensor_lock = threading.Lock()
-question_counter = 0
 
 def read_sensors_and_display():
     global sensor_readings
@@ -69,17 +63,29 @@ def read_sensors_and_display():
         #     pass
 
 # Start read_sensors_and_display in a separate thread
+sensor_lock = threading.Lock()
 sensor_thread = threading.Thread(target=read_sensors_and_display)
 sensor_thread.daemon = True  # lower priority
 sensor_thread.start()
 
+question_counter = 0
+last_question_counter = question_counter
+initial_run = True
+time.sleep(0.2)
+
 while True:
-    # skip prompt generation if conversation is ongoing
-    if not history:
-        with sensor_lock:
-            current_readings = sensor_readings
-            print("current sensor readings: ", sensor_readings)
-        prompt = generate_dynamic_prompt(current_readings)
+    if question_counter != last_question_counter or initial_run:
+            with sensor_lock:
+                sensor_readings = get_sensor_readings()  # Update sensor readings
+                current_readings = sensor_readings
+                print("Updated sensor readings: ", sensor_readings)
+            prompt = generate_dynamic_prompt(current_readings)
+            
+            # Update the last_question_counter to the current value
+            last_question_counter = question_counter
+        
+            time.sleep(0.1)  # Add a small delay to avoid rapid looping
+
 
     # creates an audio file and saves it to input_path
     record_audio(config["tech_config"]["input_path"]) 
@@ -96,7 +102,7 @@ while True:
         response, full_api_response = query_chatgpt(question, prompt, history)
 
         if config["tech_config"]["use_raspberry"] is True:
-            subprocess.run(["mpg123" , "audio/understood.mp3"])
+            subprocess.run(["mpg123", "audio/understood.mp3"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         else:
             subprocess.run(["afplay", "audio/understood.mp3"])
 
@@ -116,7 +122,7 @@ while True:
 
         time.sleep(0.1)
         if config["tech_config"]["use_raspberry"] is True:
-            subprocess.run(["mpg123", "audio/understood.mp3"])
+            subprocess.run(["mpg123", "audio/understood.mp3"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         else:
             subprocess.run(["afplay", "audio/understood.mp3"])
         time.sleep(0.1)
