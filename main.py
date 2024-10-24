@@ -53,6 +53,7 @@ def generate_dynamic_prompt(readings):
 # Shared variable for sensor readings
 sensor_readings = [] 
 sensor_lock = threading.Lock()
+question_counter = 0
 
 def read_sensors_and_display():
     global sensor_readings
@@ -76,7 +77,7 @@ while True:
     if not history:
         with sensor_lock:
             current_readings = sensor_readings
-            print("current_readings", current_readings)
+            print("current sensor readings: ", sensor_readings)
         prompt = generate_dynamic_prompt(current_readings)
 
     # creates an audio file and saves it to input_path
@@ -85,10 +86,12 @@ while True:
     # returns question from audio file as a string
     question = speech_to_text(config["tech_config"]["input_path"])
     history.append({"role": "user", "content": question})
+    question_counter += 1
+    print("question_counter: ", question_counter)
 
     end_words = config["tech_config"]["end_words"]
 
-    if not any(word.lower() in question.lower() for word in end_words):
+    if not any(word.lower() in question.lower() for word in end_words) and question_counter <= 10:
         response, full_api_response = query_chatgpt(question, prompt, history)
 
         if config["tech_config"]["use_raspberry"] is True:
