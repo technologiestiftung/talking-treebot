@@ -13,7 +13,8 @@ with open ("config.json", "r") as file:
 print("use_raspberry:", config["tech_config"]["use_raspberry"])
 
 if config["tech_config"]["use_raspberry"] is True:
-    from all_sensors import get_sensor_readings, display_text
+    # from all_sensors import get_sensor_readings, display_text
+    from bme280_sensor import get_sensor_readings
 else:
     from all_sensors_on_MAC import get_sensor_readings
 
@@ -61,11 +62,11 @@ def read_sensors_and_display():
         readings = get_sensor_readings()
         with sensor_lock:
             sensor_readings = readings
-        # Turn on display
-        if config["tech_config"]["use_raspberry"] is True:
-            display_text(readings)
-        else:
-            pass
+        # # Turn on display
+        # if config["tech_config"]["use_raspberry"] is True:
+        #     display_text(readings)
+        # else:
+        #     pass
 
 # Start read_sensors_and_display in a separate thread
 sensor_thread = threading.Thread(target=read_sensors_and_display)
