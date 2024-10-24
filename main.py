@@ -87,23 +87,14 @@ while True:
     history.append({"role": "user", "content": question})
 
     end_words = config["tech_config"]["end_words"]
-    if config["tech_config"]["use_raspberry"] is True:
-        subprocess.run(["mpg123", "audio/understood.mp3"])
-    else:
-        subprocess.run(["afplay", "audio/understood.mp3"])
 
     if not any(word.lower() in question.lower() for word in end_words):
         response, full_api_response = query_chatgpt(question, prompt, history)
 
-        # play waiting sound
-        random_waiting = random.choice(config["waitings"])
-        filename_waiting = random_waiting["filename"]
-        print("file: ", filename_waiting)
-
         if config["tech_config"]["use_raspberry"] is True:
-            subprocess.run(["mpg123", filename_waiting])
+            subprocess.run(["mpg123" , "audio/understood.mp3"])
         else:
-            subprocess.run(["afplay", filename_waiting])
+            subprocess.run(["afplay", "audio/understood.mp3"])
 
         history.append({"role": "assistant", "content": response})
         print("history: ", history)
@@ -118,7 +109,13 @@ while True:
             subprocess.run(["mpg123", config["tech_config"]["output_path"]])
         else:
             subprocess.run(["afplay", config["tech_config"]["output_path"]])
-        time.sleep(0.2)
+
+        time.sleep(0.1)
+        if config["tech_config"]["use_raspberry"] is True:
+            subprocess.run(["mpg123", "audio/understood.mp3"])
+        else:
+            subprocess.run(["afplay", "audio/understood.mp3"])
+        time.sleep(0.1)
     else:
         random_goodbye = random.choice(config["goodbyes"])
         random_text = random_goodbye["text"]
