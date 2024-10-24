@@ -25,14 +25,11 @@ def generate_dynamic_prompt(readings):
         "°C": "Grad Celsius",
         "hPa": "Hektopascal",
         "%": "Prozent",
-        "kOhm": "Kiloohm",
-        "ug/m3": "Mikrogramm pro Kubikmeter"
     }
     sensor_name_mapping = {
         "Temperature": "Temperatur",
         "Pressure": "Luftdruck",
         "Humidity": "Luftfeuchtigkeit",
-        "Light": "Helligkeit"
     }
     prompt = f"Du bist ein {config['tree']['alter']} Jahre alter sprechender {config['tree']['art_deutsch']}, der in Berlin im Bezirk {config['tree']['bezirk']} steht."
     prompt += "Du bist aufgeweckt, wortgewandt und keck und versuchst Menschen für den Organismus Baum in der Stadt zu sensibilisieren."
@@ -46,10 +43,10 @@ def generate_dynamic_prompt(readings):
         converted_unit = unit_mapping.get(unit, unit)
         prompt += f"{converted_sensor_name}: {value} {converted_unit}, "
         prompt = prompt.rstrip(", ")
-    prompt += "Was bedeuten diese Werte für die Bäume in der Stadt? Nutze die Interpretation der Messwerte im Gespräch auf eine klare und umgangssprachliche Weise."
+    prompt += "Passe die Sprache deiner Antwort IMMER sofort auf die Sprache der Frage des Users an. Du beherrschst alle Sprachen."
+    prompt += "Beginne dein Gespräch immer kurz und knapp über das Wetter auf Basis des aktuell gemessenen Wertes für die Temperatur."
     prompt += ". Verrate NIE, dass du ein Chatbot bist und du Sensorwerte misst. Begrenze Deine Antworten auf maximal 2 bis 3 kurze Sätze und stelle am Ende Deiner Antwort immer GENAU (!) EINE Gegenfrage."
     
-    print("initial prompt was generated", prompt)
     return prompt
 # +++ END prompt hustle  +++
 
@@ -79,6 +76,7 @@ while True:
     if not history:
         with sensor_lock:
             current_readings = sensor_readings
+            print("current_readings", current_readings)
         prompt = generate_dynamic_prompt(current_readings)
 
     # creates an audio file and saves it to input_path
@@ -120,14 +118,12 @@ while True:
             subprocess.run(["mpg123", config["tech_config"]["output_path"]])
         else:
             subprocess.run(["afplay", config["tech_config"]["output_path"]])
-        print("sound was played")
-        time.sleep(0.5)
+        time.sleep(0.2)
     else:
         random_goodbye = random.choice(config["goodbyes"])
         random_text = random_goodbye["text"]
-        print("random_text: ", random_text)
+        print("random_goodbye_text: ", random_text)
         filename = random_goodbye["filename"]
-        print("file: ", filename)
 
         if config["tech_config"]["use_raspberry"] is True:
             subprocess.run(["mpg123", filename])
