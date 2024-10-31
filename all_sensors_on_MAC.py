@@ -14,7 +14,6 @@ pm25 = 21
 pm10 = 26
 
 def get_sensor_readings():
-    time.sleep(1)
     sensor_readings = [
         ("Temperature", f"{temperature}", "Grad Celsius"),
         ("Pressure", f"{pressure}", "Hektopascal"),

@@ -29,10 +29,10 @@ def get_sensor_readings():
             ("Luftdruck", "N/A", "hPa"),
         ]
 
+# TODO: This block is weird
 # Example usage
 if __name__ == "__main__":
     while True:
         readings = get_sensor_readings()
         for reading in readings:
             print(f"{reading[0]}: {reading[1]} {reading[2]}")
-        time.sleep(1)
