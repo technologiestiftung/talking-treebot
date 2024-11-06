@@ -1,11 +1,14 @@
+from io import BytesIO
 import time
 import threading
 
 import numpy as np
+from pydub import AudioSegment
 import sounddevice as sd
 import soundfile as sf
 
 from ambient import calculate_threshold
+
 
 VOICE_DELTA = 850  # Minimum volume difference to detect voice; adjust according to your microphone sensitivity
 CHUNK = 1024       # Size to capture audio data per read
@@ -87,36 +90,48 @@ class VoiceRecorder:
 
         return frames
 
-    def save_recording(self, frames, filename):
+    def save_recording(self, frames):
         """
-        Save recorded audio frames to a file.
+        Save recorded audio frames to a BytesIO stream.
         """
         frames = np.concatenate(frames, axis=0)
-        sf.write(filename, frames, RATE)
-        print("Recording saved successfully.")
 
-    def record_audio(self, filename):
+        audio_stream = BytesIO()
+        sf.write(audio_stream, frames, RATE, format="WAV")
+        audio_stream.seek(0)  # Reset position to beginning for later reading
+
+        # Set name attribute for OpenAI to recognize the proper format later
+        audio_stream.name = "audio.wav"
+
+        print("Recording saved to BytesIO stream successfully.")
+
+        return audio_stream
+
+
+    def record_audio(self):
         """
         Main function to handle audio recording.
         """
         self.start_threshold_calculation()
-        stream = sd.InputStream(samplerate=RATE, dtype='int16', channels=1, blocksize=CHUNK)
+        stream = sd.InputStream(samplerate=RATE, dtype="int16", channels=1, blocksize=CHUNK)
         stream.start()
 
         if not self.check_speech(stream):
             stream.stop()
             stream.close()
-            return False
+            return None
 
         frames = self.record_audio_frames(stream)
 
         stream.stop()
         stream.close()
 
-        self.save_recording(frames, filename)
-        return True
+        # Save the recording to a BytesIO stream
+        audio_stream = self.save_recording(frames)
+
+        return audio_stream
 
 
 if __name__ == "__main__":
     recorder = VoiceRecorder()
-    recorder.record_audio("question.wav")
+    audio_stream = recorder.record_audio()

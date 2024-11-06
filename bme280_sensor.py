@@ -29,7 +29,6 @@ def get_sensor_readings():
             ("Luftdruck", "N/A", "hPa"),
         ]
 
-# TODO: This block is weird
 # Example usage
 if __name__ == "__main__":
     while True:

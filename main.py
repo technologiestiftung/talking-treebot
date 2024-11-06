@@ -3,12 +3,12 @@ import random
 import time
 import threading
 import subprocess
+from io import BytesIO
 
 from elevenlabs_tts import elevenlabs_tts
-from line_profiler import profile # TODO: Remove after optimizing
 from openai_api import speech_to_text, query_chatgpt, text_to_speech
-
 from recording import VoiceRecorder
+import simpleaudio as sa
 
 
 # Load config
@@ -20,11 +20,9 @@ if config["tech_config"]["use_raspberry"]:
 else:
     from all_sensors_on_MAC import get_sensor_readings
 
-print("use_raspberry:", config["tech_config"]["use_raspberry"]) # TODO: Use logging instead of print statements
+print("use_raspberry:", config["tech_config"]["use_raspberry"])
 
 
-# TODO: Maybe move the mappings to another file
-# +++ prompt hustle +++
 def generate_dynamic_prompt(readings):
     unit_mapping = {
         "°C": "Grad Celsius",
@@ -64,7 +62,18 @@ def generate_dynamic_prompt(readings):
         """
 
     return prompt
-# +++ END prompt hustle  +++
+
+
+def play_audio(audio_segment):
+    # Export audio segment to BytesIO as WAV
+    audio_stream = BytesIO()
+    audio_segment.export(audio_stream, format="wav")
+    audio_stream.seek(0)
+
+    # Play audio using simpleaudio
+    wave_obj = sa.WaveObject.from_wave_file(audio_stream)
+    play_obj = wave_obj.play()
+    play_obj.wait_done()  # Wait until playback is finished
 
 
 class SensorManager:
@@ -83,18 +92,11 @@ class SensorManager:
 
     def start_reading(self):
         sensor_thread = threading.Thread(target=self.read_sensors)
-        sensor_thread.daemon = True  # Lower priority TODO: ???
+        sensor_thread.daemon = True  # Lower priority
         sensor_thread.start()
 
     def stop_reading(self):
         self.running = False
-
-    # TODO: Do we want to keep this block of code? It was commented out
-    # # Turn on display
-    # if config["tech_config"]["use_raspberry"] is True:
-    #     display_text(readings)
-    # else:
-    #     pass
 
 
 def main():
@@ -110,7 +112,6 @@ def main():
 
     while True:
         if question_counter != last_question_counter or initial_run:
-                # TODO: Is this lock really necessary?
                 with sensor_manager.sensor_lock:
                     current_readings = get_sensor_readings()  # Update sensor readings
                     print("Updated sensor readings: ", current_readings)
@@ -122,12 +123,12 @@ def main():
                 time.sleep(0.1)  # Add a small delay to avoid rapid looping
 
 
-        # creates an audio file and saves it to input_path
+        # Creates an audio file and saves it to a BytesIO stream
         voice_recorder = VoiceRecorder()
-        voice_recorder.record_audio(config["tech_config"]["input_path"]) 
+        audio_stream = voice_recorder.record_audio()
 
-        # returns question from audio file as a string
-        question = speech_to_text(config["tech_config"]["input_path"])
+        # Returns question from audio file as a string
+        question = speech_to_text(audio_stream)
         history.append({"role": "user", "content": question})
         question_counter += 1
         print("question_counter: ", question_counter)
@@ -137,46 +138,26 @@ def main():
         if not any(word.lower() in question.lower() for word in end_words) and question_counter <= 10:
             response, full_api_response = query_chatgpt(question, prompt, history)
 
-            if config["tech_config"]["use_raspberry"]:
-                subprocess.run(["mpg123", "audio/understood.mp3"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            else:
-                subprocess.run(["afplay", "audio/understood.mp3"])
-
             history.append({"role": "assistant", "content": response})
             print("history: ", history)
             
-            # choose preffered text to speech engine
-            if config["tech_config"]["use_elevenlabs"] is True:
-                elevenlabs_tts(response, config["tech_config"]["output_path"])
+            # Choose preferred text to speech engine
+            if config["tech_config"]["use_elevenlabs"]:
+                response_audio = elevenlabs_tts(response)
             else:
-                text_to_speech(response, config["tech_config"]["output_path"])
+                response_audio = text_to_speech(response)
 
-            if config["tech_config"]["use_raspberry"] is True:
-                subprocess.run(["mpg123", config["tech_config"]["output_path"]])
-            else:
-                subprocess.run(["afplay", config["tech_config"]["output_path"]])
-            time.sleep(0.1)
-
-            if config["tech_config"]["use_raspberry"]:
-                subprocess.run(["mpg123", "audio/understood.mp3"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            else:
-                subprocess.run(["afplay", "audio/understood.mp3"])
+            play_audio(response_audio)
             time.sleep(0.1)
 
         else:
             random_goodbye = random.choice(config["goodbyes"])
-            random_text = random_goodbye["text"]
-            print("random_goodbye_text: ", random_text)
-            filename = random_goodbye["filename"]
+            print("random_goodbye_text: ", random_goodbye["text"])
 
-            if config["tech_config"]["use_raspberry"] is True:
-                subprocess.run(["mpg123", filename])
-            else:
-                subprocess.run(["afplay", filename])
+            goodbye_audio = elevenlabs_tts(random_goodbye["text"])
+            play_audio(goodbye_audio)
             history = []
 
-    # TODO: Do we want this?
-    # sensor_manager.stop_reading()
 
 if __name__ == "__main__":
     print("Howdy, Coder! 👩‍💻👨‍💻👋")
