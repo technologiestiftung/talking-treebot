@@ -27,12 +27,16 @@ def speech_to_text(audio_stream):
     """
 
     client = OpenAI()
-    transcription = client.audio.transcriptions.create(
+    response = client.audio.transcriptions.create(
         model="whisper-1", 
-        file=audio_stream
+        file=audio_stream,
+        response_format="verbose_json"
     )
 
-    return transcription.text
+    transcription = response.text
+    language = response.language
+
+    return transcription, language
 
 def query_chatgpt(question, prompt, messages):
     """
@@ -97,7 +101,7 @@ if __name__ == "__main__":
         spezifischen Vorlieben, die zu einem Straßenbaum in Berlin passen, aus.
         """
 
-    question = speech_to_text(config["tech_config"]["input_path"])
+    question, languages = speech_to_text(config["tech_config"]["input_path"])
     print("question:", question)
 
     response, full_api_response = query_chatgpt(question, prompt)

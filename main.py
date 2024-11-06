@@ -128,9 +128,10 @@ def main():
         audio_stream = voice_recorder.record_audio()
 
         # Returns question from audio file as a string
-        question = speech_to_text(audio_stream)
+        question, question_language = speech_to_text(audio_stream)
         history.append({"role": "user", "content": question})
         question_counter += 1
+        print("question language: ", question_language)
         print("question_counter: ", question_counter)
 
         end_words = config["tech_config"]["end_words"]
