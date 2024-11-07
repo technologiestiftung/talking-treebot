@@ -90,7 +90,6 @@ cpu_temps = [get_cpu_temperature()] * 5
 
 
 def get_sensor_readings():
-    time.sleep(1)
     sensor_data = []
     #temperature
     cpu_temps = []

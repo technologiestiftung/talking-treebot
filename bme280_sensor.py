@@ -35,4 +35,3 @@ if __name__ == "__main__":
         readings = get_sensor_readings()
         for reading in readings:
             print(f"{reading[0]}: {reading[1]} {reading[2]}")
-        time.sleep(1)

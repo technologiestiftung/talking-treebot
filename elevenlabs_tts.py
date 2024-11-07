@@ -1,16 +1,18 @@
+from dotenv import load_dotenv
+from io import BytesIO
 import os
+
 from elevenlabs import VoiceSettings
 from elevenlabs.client import ElevenLabs
-from dotenv import load_dotenv
+from pydub import AudioSegment
+
 
 load_dotenv()
 
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
-client = ElevenLabs(
-    api_key=ELEVENLABS_API_KEY,
-)
+client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 
-def elevenlabs_tts(transcription, filepath):
+def elevenlabs_tts(transcription):
     response = client.text_to_speech.convert(
         voice_id="KqY0pr2VOkd9SVIHMnwM", # Matilda
         optimize_streaming_latency="0",
@@ -25,17 +27,16 @@ def elevenlabs_tts(transcription, filepath):
         ),
     )
 
-    # Writing the audio to a file
-    with open(filepath, "wb") as f:
-        for chunk in response:
-            if chunk:
-                f.write(chunk)
+    # Use BytesIO to store audio data in memory
+    audio_data = BytesIO()
+    for chunk in response:
+        if chunk:
+            audio_data.write(chunk)
+    audio_data.seek(0)  # Reset the stream position to the beginning
 
-    print(f"{filepath}: A new audio file was saved successfully!")
+    # Load audio with pydub
+    audio_segment = AudioSegment.from_file(audio_data, format="mp3")
 
-    # Return the path of the saved audio file
-    return filepath
+    print(f"A new audio was generated successfully!")
 
-if __name__ == "__main__":
-    transcription = "Als sprechender Spitzahorn hier in Berlin ist es mir wichtig, Menschen für den Organismus Baum zu sensibilisieren. Bäume kommunizieren untereinander über Wurzelsysteme und chemische Signale, um sich vor Gefahren zu warnen oder Nährstoffe auszutauschen. Wie stark fühlt sich die Luftqualität für euch an in Bezug auf die aktuellen Messwerte?"
-    elevenlabs_tts(transcription, "answer.mp3")
+    return audio_segment
