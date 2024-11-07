@@ -131,6 +131,12 @@ def main():
         question, question_language = speech_to_text(audio_stream)
         history.append({"role": "user", "content": question})
         question_counter += 1
+
+        if config["tech_config"]["use_raspberry"] is True:
+            subprocess.run(["mpg123", "audio/understood.mp3"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        else:
+            subprocess.run(["afplay", "audio/understood.mp3"])
+
         print("question language: ", question_language)
         print("question_counter: ", question_counter)
 
