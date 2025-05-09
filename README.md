@@ -10,11 +10,11 @@ We use `Python 3.11.2` with `pip` as package manager and `virtualenv` to create 
 </p>
 
 
-**⚠️ Update: We noticed that the multi-threading approach and playing back sounds on a Raspberry Pi Zero is a too intensive process, meaning that all the tasks will be performed in a very slow manner. Thus, we highly recommend, to switch on another Raspberry Pi with more RAM (e.g. Raspi v4) and get sensor readings from a programmatic approach (manually per day) or by configuring a BME280 sensor.**
+**⚠️ Update: We noticed that the multi-threading approach and playing back sounds on a Raspberry Pi Zero is a too intensive process, meaning that all the tasks will be performed in a very slow manner. Thus, we highly recommend, to switch on another Raspberry Pi with more RAM (e.g. Raspi v4) and get BME280 sensor readings only once at the beginning of each conversation.**
 
 ## Hardware
 
-- Raspberry Pi Zero v1.1
+- Raspberry Pi Zero v1.1 (deprecated) / instead use: Raspi v4 with 8GB
 - 16GB micro SD card
 - micro USB -> USB adapter
 - USB splitter (to have two USB slots)
@@ -22,7 +22,7 @@ We use `Python 3.11.2` with `pip` as package manager and `virtualenv` to create 
 - Bluetooth Lavalier microphone with USB receiver
 - Enviro+ hat including the PM sensor to measure particles in the air
 
-## Setup Raspberry Pi Zero
+## Setup Raspberry Pi v4
 
 The chatbot uses Rasbian OS (Bookworm) to save some RAM and energy. Please note that we use the latest Bookworm release in which Python v3.11.2 is pre-installed.
 
@@ -30,11 +30,26 @@ The chatbot uses Rasbian OS (Bookworm) to save some RAM and energy. Please note 
 
 In case you use an older OS of Raspbian you could go with Python v9 (pre-installed).
 
-### Configure Microphone and Speaker
+## Setup Environment
+Enable I2C on Raspberry to make BME280 and button work:
+`sudo raspi-config nonint do_i2c 0`
 
+System-level dependencies that cannot be installed with pip. Rather use `apt`as system-wide package manager to install the following:
+`sudo apt update`
+`sudo apt install libasound2-dev`
+`sudo apt install portaudio19-dev`
+`sudo apt install mpg123`
+`sudo apt install git`
+
+1. Install the same Python version you are using on your Raspberry Pi (ideally v3.11.2 any other version like v9 also works)
+2. Pull this GitHub Repository by running `git clone https://github.com/technologiestiftung/talking-treebot`
+3. Navigate into the folder `cd talkding-treebot`
+2. Install `venv` and create a virtual environment: `python3.11 -m venv treebot-env` 
+3. Activate venv: `source treebot-env/bin/activate`
+4. Install missing environment packages with `pip install [the-missing-package]` or simply run `pip install -r requirements.txt`
+
+## Configure Microphone and Speaker
 Install the ALSA service utilities and follow steps below.
-
-Run `sudo apt install -y mpg123` to play mp3 files on raspberry.
 
 1. `sudo alsactl init`
 2. list available playback devices (speaker) on RasPi `aplay -l`
@@ -73,29 +88,21 @@ ctl.!default {
 5. Restart the ALS service to apply the changes: `sudo systemctl restart alsa`
 
 In order to increase the volume of your speaker e.g. to 80% you can run `amixer set Master 80%`
+
+
 You should test your speaker and microphone configurations:
 Record 5sec: `arecord -D hw:0,0 -f cd -t wav -d 5 -r 44100 -c 1 test-record.wav`
 Play your recording: `aplay test-recording.wav`
 
-### Setup Environment
+### Starting the Script
+Note: running the script with sudo can cause other issues, such as conflicts with PulseAudio or the virtual environment. Try to avoid running `main.py` or `button.py` in sudo mode.
 
-First install git to be able to pull the enviro+ repository.
-`sudo apt update`
-`sudo apt install git`
+Instead give your user GPIO access to make `button.py` work:
+-Add your user (treebot) to the gpio group: `sudo usermod -aG gpio treebot`
+- then reboot: `sudo reboot`
+- check access (gpio should be listed): `groups`
 
-Follow this introduction to install enviro+: https://learn.pimoroni.com/article/getting-started-with-enviro-plus#installing-the-enviro-python-library
-
-Activate the virtual environment with `source ~/.virtualenvs/pimoroni/bin/activate`.
-You should now be able to explore and run all example codes without retrieving any error messages.
-
-Next, pull this GitHub Repository by running `git clone https://github.com/technologiestiftung/talking-treebot`.
-Navigate into the folder `cd talkding-treebot` and run `pip install -r requirements.txt`. All the packages and libraries need to run the
-
-## Setup MacOS
-
-1. Install the same Python version you are using on your Raspberry Pi (ideally v3.11.2 any other version like v9 also works)
-2. Install `venv` and create a virtual environment: `python3.11 -m venv treebot-env` and activate it `source treebot-env/bin/activate`
-3. Install `pip` and install missing packages with `pip install [the-missing-package]` or simply run `pip install -r requirements.txt`
+Run: `python main.py` in order to start the conversation. I f you soldered a button to the Raspi, you can also run `python button.py` to run the main script whislt having more control over the interaction.
 
 ## How to interact with my little Pi?
 
