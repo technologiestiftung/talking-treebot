@@ -65,6 +65,10 @@ def generate_dynamic_prompt(readings):
 
 
 def play_audio(audio_segment):
+    # Ensure the audio is in stereo
+    if audio_segment.channels == 1:
+        audio_segment = audio_segment.set_channels(2)
+
     # Export audio segment to BytesIO as WAV
     audio_stream = BytesIO()
     audio_segment.export(audio_stream, format="wav")
