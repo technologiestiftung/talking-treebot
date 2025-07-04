@@ -20,7 +20,7 @@ class VoiceRecorder:
         self.lock = threading.Lock()
         self.calculation_done = threading.Event()
         self.silence_limit = 1.4  # Seconds of silence before stopping the recording
-        self.consecutive_silent_frames_threshold = 3  # Count threshold for silence detection
+        self.consecutive_silent_frames_threshold = 6 # Count threshold for silence detection
 
     def start_threshold_calculation(self):
         """
@@ -85,6 +85,8 @@ class VoiceRecorder:
                     if silent_frames >= silent_chunks_needed:
                         print("Extended silence detected, stopping recording.")
                         break
+                else:
+                    silent_frames = 0
             else:
                 consecutive_silent_frames = 0
 
