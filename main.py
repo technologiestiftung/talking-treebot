@@ -2,6 +2,7 @@ import json
 import random
 import time
 import threading
+import signal
 import subprocess
 from io import BytesIO
 
@@ -9,7 +10,11 @@ from elevenlabs_tts import elevenlabs_tts
 from openai_api import speech_to_text, query_chatgpt, text_to_speech
 from recording import VoiceRecorder
 import simpleaudio as sa
+import RPi.GPIO as GPIO
 
+LED_PIN = 24
+GPIO.setmode(GPIO.BCM)  # Use BCM pin numbering
+GPIO.setup(LED_PIN, GPIO.OUT)  # Set LED pin as output
 
 # Load config
 with open ("config.json", "r") as file:
@@ -102,8 +107,18 @@ class SensorManager:
     def stop_reading(self):
         self.running = False
 
+# Shared flag to control the loop
+loop_active = False
+
+def signal_handler(signum, frame):
+    global loop_active
+    loop_active = not loop_active
+    print(f"Received SIGUSR1 — loop_active is now {loop_active}")
+
+signal.signal(signal.SIGUSR1, signal_handler)
 
 def main():
+    global loop_active
     history = []
 
     sensor_manager = SensorManager()
@@ -114,60 +129,74 @@ def main():
     initial_run = True
     time.sleep(0.2)
 
-    while True:
-        if question_counter != last_question_counter or initial_run:
-                with sensor_manager.sensor_lock:
-                    current_readings = get_sensor_readings()  # Update sensor readings
-                    print("Updated sensor readings: ", current_readings)
-                prompt = generate_dynamic_prompt(current_readings)
-                
-                # Update the last_question_counter to the current value
-                last_question_counter = question_counter
-            
-                time.sleep(0.1)  # Add a small delay to avoid rapid looping
+    try:
+        while True:
+            if loop_active:
+                if question_counter != last_question_counter or initial_run:
+                        with sensor_manager.sensor_lock:
+                            current_readings = get_sensor_readings()  # Update sensor readings
+                            print("Updated sensor readings: ", current_readings)
+                        prompt = generate_dynamic_prompt(current_readings)
+                        
+                        # Update the last_question_counter to the current value
+                        last_question_counter = question_counter
+                    
+                        time.sleep(0.1)  # Add a small delay to avoid rapid looping
 
+                # Turn on LED when we listen
+                GPIO.output(LED_PIN, GPIO.HIGH)
 
-        # Creates an audio file and saves it to a BytesIO stream
-        voice_recorder = VoiceRecorder()
-        audio_stream = voice_recorder.record_audio()
+                # Creates an audio file and saves it to a BytesIO stream
+                voice_recorder = VoiceRecorder()
+                audio_stream = voice_recorder.record_audio()
 
-        # Returns question from audio file as a string
-        question, question_language = speech_to_text(audio_stream)
-        history.append({"role": "user", "content": question})
-        question_counter += 1
+                # Returns question from audio file as a string
+                question, question_language = speech_to_text(audio_stream)
+                history.append({"role": "user", "content": question})
+                question_counter += 1
 
-        if config["tech_config"]["use_raspberry"] is True:
-            subprocess.run(["mpg123", "audio/understood.mp3"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        else:
-            subprocess.run(["afplay", "audio/understood.mp3"])
+                if config["tech_config"]["use_raspberry"] is True:
+                    subprocess.run(["mpg123", "audio/understood.mp3"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                else:
+                    subprocess.run(["afplay", "audio/understood.mp3"])
 
-        print("question language: ", question_language)
-        print("question_counter: ", question_counter)
+                print("question language: ", question_language)
+                print("question_counter: ", question_counter)
 
-        end_words = config["tech_config"]["end_words"]
+                end_words = config["tech_config"]["end_words"]
 
-        if not any(word.lower() in question.lower() for word in end_words) and question_counter <= 10:
-            response, full_api_response = query_chatgpt(question, prompt, history)
+                if loop_active:
+                    response, full_api_response = query_chatgpt(question, prompt, history)
 
-            history.append({"role": "assistant", "content": response})
-            print("history: ", history)
-            
-            # Choose preferred text to speech engine
-            if config["tech_config"]["use_elevenlabs"]:
-                response_audio = elevenlabs_tts(response)
+                    history.append({"role": "assistant", "content": response})
+                    print("history: ", history)
+                    
+                    # Choose preferred text to speech engine
+                    if config["tech_config"]["use_elevenlabs"]:
+                        response_audio = elevenlabs_tts(response)
+                    else:
+                        response_audio = text_to_speech(response)
+
+                    play_audio(response_audio)
+                    time.sleep(0.1)
+
+                else:
+                    random_goodbye = random.choice(config["goodbyes"])
+                    print("random_goodbye_text: ", random_goodbye["text"])
+
+                    goodbye_audio = elevenlabs_tts(random_goodbye["text"])
+                    play_audio(goodbye_audio)
+                    history = []
+                    #loop_active = False
             else:
-                response_audio = text_to_speech(response)
-
-            play_audio(response_audio)
-            time.sleep(0.1)
-
-        else:
-            random_goodbye = random.choice(config["goodbyes"])
-            print("random_goodbye_text: ", random_goodbye["text"])
-
-            goodbye_audio = elevenlabs_tts(random_goodbye["text"])
-            play_audio(goodbye_audio)
-            history = []
+                #print("Waiting for button press to wake up")
+                GPIO.output(LED_PIN, GPIO.LOW)
+                #signal.pause()
+                #play_audio(elevenlabs_tts("Ich bin ein Baum und warte"))
+                time.sleep(0.1)            
+    finally:
+        # Cleanup GPIO on exit
+        GPIO.cleanup()
 
 
 if __name__ == "__main__":
