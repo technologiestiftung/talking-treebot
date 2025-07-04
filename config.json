@@ -101,6 +101,6 @@
       "Ende"
     ],
     "use_elevenlabs": true,
-    "use_raspberry": false
+    "use_raspberry": true
   }
 }

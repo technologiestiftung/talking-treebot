@@ -1,27 +1,34 @@
-from gpiozero import LED, Button          
+import RPi.GPIO as GPIO
 import subprocess
+import time
 
-led = LED(24)  
-button = Button(23) 
+# GPIO pin numbers
+LED_PIN = 24
+BUTTON_PIN = 23
 
-state = False  # Initially, LED is off
-process = None  # store the subprocess running main.py
+# Setup GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(LED_PIN, GPIO.OUT)
+GPIO.setup(BUTTON_PIN, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-while True:
-    button.wait_for_press()  # Wait for button to be pressed
-    print("button was pressed")
-    
-    if state:
-        led.off()  # Turn off if currently on
-        state = False 
-        if process:
-                process.terminate()  # Stop main.py script
-                process = None
-                process = subprocess.Popen(["/bin/bash", "stop_main.sh"])
-    else:
-        led.on()  # Turn on if currently off
-        state = True
-        process = subprocess.Popen(["/bin/bash", "run_main.sh"]) 
-    
-    button.wait_for_release() 
+try:
+    while True:
+        if GPIO.input(BUTTON_PIN) == GPIO.LOW:  # Button is pressed
+            print("Button was pressed")
 
+            # Flash LED briefly to indicate the signal was sent
+            GPIO.output(LED_PIN, GPIO.HIGH)
+            subprocess.run(
+                ["systemctl", "--user", "kill", "--signal=SIGUSR1", "treebot.service"]
+            )
+            time.sleep(0.1)
+            GPIO.output(LED_PIN, GPIO.LOW)
+
+            # Debounce the button press
+            time.sleep(0.3)
+
+except KeyboardInterrupt:
+    print("Exiting...")
+
+finally:
+    GPIO.cleanup()
