@@ -1,10 +1,11 @@
-elevenlabs==1.6.1
+elevenlabs==1.6.1 
 mpg123==0.4
 numpy==2.0.1
 openai==1.78.0
 pydub==0.25.1
 python-dotenv==1.0.1
-simpleaudio==1.0.4
+simpleaudio==1.0.4 
+RPi.GPIO==0.7.1
 sounddevice==0.4.7
 soundfile==0.12.1
-## sensor libs are automatically installed by enviro+
+
