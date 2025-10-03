@@ -6,7 +6,6 @@ from elevenlabs import VoiceSettings
 from elevenlabs.client import ElevenLabs
 from pydub import AudioSegment
 
-
 load_dotenv()
 
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
@@ -18,7 +17,7 @@ def elevenlabs_tts(transcription):
         optimize_streaming_latency="0",
         output_format="mp3_22050_32",  # Use MP3 format with 22.05kHz sample rate at 32kbps
         text=transcription,
-        model_id="eleven_multilingual_v2", # use the eleven_turbo_v2 model for low latency, use eleven_multilingual_v2 for multilingual support
+        model_id="eleven_turbo_v2_5", # faster than eleven_multilingual_v2pport
         voice_settings=VoiceSettings(
             stability=0.8,
             similarity_boost=1.0,
