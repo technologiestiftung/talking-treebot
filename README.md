@@ -24,12 +24,10 @@ The chatbot uses Rasbian OS (Bookworm) to save some RAM and energy. Please note 
 
 1. Install [Rasbian Bookworm OS](https://www.raspberrypi.com/software/operating-systems/) by using the [Raspberry Pi Imager](https://projects.raspberrypi.org/en/projects/raspberry-pi-setting-up/2) to flash your SD card.
 
-In case you use an older OS of Raspbian you could go with Python v9 (pre-installed).
+⚠️ Update: the latest version, released on 1st of October, contains `Python 3.13` which is not compatible (yet) with the `audioop`library. You would need to downgrade your Python version!
 
 ## Setup Environment
-Enable I2C on Raspberry to make BME280 and button work:
-`sudo raspi-config nonint do_i2c 0`
-
+### System-Level
 System-level dependencies that cannot be installed with pip. Rather use `apt`as system-wide package manager to install the following:
 `sudo apt update`
 `sudo apt install libasound2-dev`
@@ -37,12 +35,14 @@ System-level dependencies that cannot be installed with pip. Rather use `apt`as 
 `sudo apt install mpg123`
 `sudo apt install git`
 
-1. Install the same Python version you are using on your Raspberry Pi (ideally v3.11.2 any other version like v9 also works)
+### Repo, Pi & Venv
+1. Install the same Python version you are using on your Raspberry Pi (ideally v3.11.2, any older version like v9 also works)
 2. Pull this GitHub Repository by running `git clone https://github.com/technologiestiftung/talking-treebot`
 3. Navigate into the folder `cd talkding-treebot`
 2. Install `venv` and create a virtual environment: `python3.11 -m venv treebot-env` 
 3. Activate venv: `source treebot-env/bin/activate`
 4. Install missing environment packages with `pip install [the-missing-package]` or simply run `pip install -r requirements.txt`
+5. Enable I2C on Raspberry to make button and bme280 work: `sudo raspi-config nonint do_i2c 0`
 
 ## Configure Microphone and Speaker
 Install the ALSA service utilities and follow steps below.
