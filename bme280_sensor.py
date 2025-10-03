@@ -1,6 +1,5 @@
 import smbus2
 from bme280 import BME280
-import time
 
 # BME280 Sensor initialisieren
 bus = smbus2.SMBus(1)

@@ -2,11 +2,8 @@ from dotenv import load_dotenv
 import json
 from io import BytesIO
 from pathlib import Path
-
 from pydub import AudioSegment
-
 from openai import OpenAI
-
 
 load_dotenv()
 with open ("config.json", "r") as file:

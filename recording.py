@@ -9,7 +9,6 @@ import soundfile as sf
 
 from ambient import calculate_threshold
 
-
 VOICE_DELTA = 850  # Minimum volume difference to detect voice; adjust according to your microphone sensitivity
 CHUNK = 1024       # Size to capture audio data per read
 RATE = 22050       # Samples per second
