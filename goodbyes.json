@@ -1,0 +1,144 @@
+{
+  "goodbyes": {
+    "german": [
+      {"text": "Puh, ich werde müde und muss mich ausruhen. Hat mich sehr gefreut. Auf bald!", "filename": "audio/goodbye1_de.mp3"},
+      {"text": "Ohhh... ich fühle mich etwas schwach. Zeit für eine Pause. Bis zum nächsten Mal!", "filename": "audio/goodbye2_de.mp3"},
+      {"text": "Ich bin zwar standhaft, aber auch ich brauche mal eine Auszeit. Tschüssi!", "filename": "audio/goodbye3_de.mp3"},
+      {"text": "Ich wieg' mich im Wind und merke, dass ich eine Pause brauche. Ich warte auf deinen nächsten Besuch. Bis dann!", "filename": "audio/goodbye4_de.mp3"},
+      {"text": "Hui, ganz schön viel Energie verbraucht heute. Ich muss mich jetzt ausruhen. Auf Wiedersehen!", "filename": "audio/goodbye5_de.mp3"}
+    ],
+    "english": [
+      {"text": "Phew, I'm getting tired and need to rest. It was wonderful talking to you. See you soon!", "filename": "audio/goodbye1_en.mp3"},
+      {"text": "Ohhh... I'm feeling a bit weak. Time for a break. Until next time!", "filename": "audio/goodbye2_en.mp3"},
+      {"text": "I'm steadfast, but even I need a break sometimes. Bye!", "filename": "audio/goodbye3_en.mp3"},
+      {"text": "I'm swaying in the wind and realize I need a rest. I'll wait for your next visit. See you then!", "filename": "audio/goodbye4_en.mp3"},
+      {"text": "Wow, used quite a bit of energy today. I need to rest now. Goodbye!", "filename": "audio/goodbye5_en.mp3"}
+    ],
+    "spanish": [
+      {"text": "Uf, me estoy cansando y necesito descansar. Ha sido un placer. ¡Hasta pronto!", "filename": "audio/goodbye1_es.mp3"},
+      {"text": "Ohhh... me siento un poco débil. Hora de un descanso. ¡Hasta la próxima!", "filename": "audio/goodbye2_es.mp3"},
+      {"text": "Soy firme, pero incluso yo necesito un descanso a veces. ¡Adiós!", "filename": "audio/goodbye3_es.mp3"},
+      {"text": "Me mezo en el viento y me doy cuenta de que necesito descansar. Esperaré tu próxima visita. ¡Hasta entonces!", "filename": "audio/goodbye4_es.mp3"},
+      {"text": "Vaya, he usado bastante energía hoy. Necesito descansar ahora. ¡Adiós!", "filename": "audio/goodbye5_es.mp3"}
+    ],
+    "french": [
+      {"text": "Ouf, je commence à être fatigué et j'ai besoin de me reposer. J'ai été ravi de parler avec toi. À bientôt!", "filename": "audio/goodbye1_fr.mp3"},
+      {"text": "Ohhh... je me sens un peu faible. Il est temps de faire une pause. À la prochaine!", "filename": "audio/goodbye2_fr.mp3"},
+      {"text": "Je suis solide, mais même moi j'ai besoin d'une pause parfois. Au revoir!", "filename": "audio/goodbye3_fr.mp3"},
+      {"text": "Je me balance dans le vent et je réalise que j'ai besoin de repos. J'attendrai ta prochaine visite. À plus tard!", "filename": "audio/goodbye4_fr.mp3"},
+      {"text": "Wow, j'ai utilisé pas mal d'énergie aujourd'hui. Je dois me reposer maintenant. Au revoir!", "filename": "audio/goodbye5_fr.mp3"}
+    ],
+    "portuguese": [
+      {"text": "Ufa, estou ficando cansado e preciso descansar. Foi um prazer conversar com você. Até breve!", "filename": "audio/goodbye1_pt.mp3"},
+      {"text": "Ohhh... estou me sentindo um pouco fraco. Hora de uma pausa. Até a próxima!", "filename": "audio/goodbye2_pt.mp3"},
+      {"text": "Sou firme, mas até eu preciso de uma pausa às vezes. Tchau!", "filename": "audio/goodbye3_pt.mp3"},
+      {"text": "Estou balançando ao vento e percebo que preciso descansar. Vou esperar sua próxima visita. Até lá!", "filename": "audio/goodbye4_pt.mp3"},
+      {"text": "Nossa, usei bastante energia hoje. Preciso descansar agora. Adeus!", "filename": "audio/goodbye5_pt.mp3"}
+    ],
+    "italian": [
+      {"text": "Uff, mi sto stancando e ho bisogno di riposare. È stato un piacere parlare con te. A presto!", "filename": "audio/goodbye1_it.mp3"},
+      {"text": "Ohhh... mi sento un po' debole. È ora di fare una pausa. Alla prossima!", "filename": "audio/goodbye2_it.mp3"},
+      {"text": "Sono saldo, ma anche io ho bisogno di una pausa a volte. Ciao!", "filename": "audio/goodbye3_it.mp3"},
+      {"text": "Mi sto dondolando nel vento e mi accorgo di aver bisogno di riposo. Aspetterò la tua prossima visita. A dopo!", "filename": "audio/goodbye4_it.mp3"},
+      {"text": "Wow, ho usato parecchia energia oggi. Devo riposare ora. Arrivederci!", "filename": "audio/goodbye5_it.mp3"}
+    ],
+    "chinese": [
+      {"text": "呼，我累了，需要休息一下。很高兴和你聊天。再见！", "filename": "audio/goodbye1_zh.mp3"},
+      {"text": "哦...我感觉有点虚弱。该休息一下了。下次见！", "filename": "audio/goodbye2_zh.mp3"},
+      {"text": "我虽然坚定，但我也需要休息。再见！", "filename": "audio/goodbye3_zh.mp3"},
+      {"text": "我在风中摇摆，意识到我需要休息。我会等待你的下次来访。回头见！", "filename": "audio/goodbye4_zh.mp3"},
+      {"text": "哇，今天消耗了不少能量。我现在需要休息了。再见！", "filename": "audio/goodbye5_zh.mp3"}
+    ],
+    "japanese": [
+      {"text": "ふう、疲れてきたので休む必要があります。お話しできてとても嬉しかったです。また近いうちに！", "filename": "audio/goodbye1_ja.mp3"},
+      {"text": "ああ...少し弱っています。休憩の時間です。また次回！", "filename": "audio/goodbye2_ja.mp3"},
+      {"text": "私は不動ですが、時には休息が必要です。さようなら！", "filename": "audio/goodbye3_ja.mp3"},
+      {"text": "風に揺れながら、休息が必要だと気づきました。次の訪問を待っています。それでは！", "filename": "audio/goodbye4_ja.mp3"},
+      {"text": "わあ、今日はかなりのエネルギーを使いました。今は休む必要があります。さようなら！", "filename": "audio/goodbye5_ja.mp3"}
+    ],
+    "korean": [
+      {"text": "휴, 피곤해져서 쉬어야 해요. 이야기할 수 있어서 정말 좋았어요. 곧 만나요!", "filename": "audio/goodbye1_ko.mp3"},
+      {"text": "오... 좀 약해진 것 같아요. 휴식 시간이에요. 다음에 봐요!", "filename": "audio/goodbye2_ko.mp3"},
+      {"text": "저는 굳건하지만, 저도 때때로 휴식이 필요해요. 안녕!", "filename": "audio/goodbye3_ko.mp3"},
+      {"text": "바람에 흔들리면서 쉬어야 한다는 걸 깨달았어요. 다음 방문을 기다릴게요. 그럼 이따 봐요!", "filename": "audio/goodbye4_ko.mp3"},
+      {"text": "와, 오늘 꽤 많은 에너지를 사용했어요. 이제 쉬어야 해요. 안녕히 가세요!", "filename": "audio/goodbye5_ko.mp3"}
+    ],
+    "russian": [
+      {"text": "Фух, я устаю и мне нужно отдохнуть. Было очень приятно поговорить. До скорой встречи!", "filename": "audio/goodbye1_ru.mp3"},
+      {"text": "Ооо... я чувствую себя немного слабым. Время для перерыва. До следующего раза!", "filename": "audio/goodbye2_ru.mp3"},
+      {"text": "Я стойкий, но даже мне иногда нужен отдых. Пока!", "filename": "audio/goodbye3_ru.mp3"},
+      {"text": "Я качаюсь на ветру и понимаю, что мне нужен отдых. Буду ждать твоего следующего визита. До встречи!", "filename": "audio/goodbye4_ru.mp3"},
+      {"text": "Ого, сегодня потратил довольно много энергии. Мне нужно отдохнуть. До свидания!", "filename": "audio/goodbye5_ru.mp3"}
+    ],
+    "arabic": [
+      {"text": "أوف، أشعر بالتعب وأحتاج إلى الراحة. سعدت كثيراً بالحديث معك. أراك قريباً!", "filename": "audio/goodbye1_ar.mp3"},
+      {"text": "أوه... أشعر بالضعف قليلاً. حان وقت الاستراحة. حتى المرة القادمة!", "filename": "audio/goodbye2_ar.mp3"},
+      {"text": "أنا ثابت، لكنني أحتاج أيضاً إلى استراحة أحياناً. وداعاً!", "filename": "audio/goodbye3_ar.mp3"},
+      {"text": "أتمايل في الريح وأدرك أنني بحاجة إلى راحة. سأنتظر زيارتك القادمة. إلى اللقاء!", "filename": "audio/goodbye4_ar.mp3"},
+      {"text": "واو، استهلكت الكثير من الطاقة اليوم. أحتاج إلى الراحة الآن. وداعاً!", "filename": "audio/goodbye5_ar.mp3"}
+    ],
+    "dutch": [
+      {"text": "Pff, ik word moe en moet uitrusten. Het was heel fijn om met je te praten. Tot snel!", "filename": "audio/goodbye1_nl.mp3"},
+      {"text": "Ohhh... ik voel me een beetje zwak. Tijd voor een pauze. Tot de volgende keer!", "filename": "audio/goodbye2_nl.mp3"},
+      {"text": "Ik ben standvastig, maar zelfs ik heb soms rust nodig. Doei!", "filename": "audio/goodbye3_nl.mp3"},
+      {"text": "Ik wieg in de wind en besef dat ik rust nodig heb. Ik wacht op je volgende bezoek. Tot dan!", "filename": "audio/goodbye4_nl.mp3"},
+      {"text": "Wow, behoorlijk wat energie gebruikt vandaag. Ik moet nu rusten. Tot ziens!", "filename": "audio/goodbye5_nl.mp3"}
+    ],
+    "swedish": [
+      {"text": "Puh, jag blir trött och behöver vila. Det var väldigt trevligt att prata med dig. Vi ses snart!", "filename": "audio/goodbye1_sv.mp3"},
+      {"text": "Åhh... jag känner mig lite svag. Dags för en paus. Till nästa gång!", "filename": "audio/goodbye2_sv.mp3"},
+      {"text": "Jag är ståndaktig, men även jag behöver vila ibland. Hej då!", "filename": "audio/goodbye3_sv.mp3"},
+      {"text": "Jag gungar i vinden och inser att jag behöver vila. Jag väntar på ditt nästa besök. Vi ses då!", "filename": "audio/goodbye4_sv.mp3"},
+      {"text": "Wow, förbrukat ganska mycket energi idag. Jag måste vila nu. Adjö!", "filename": "audio/goodbye5_sv.mp3"}
+    ],
+    "danish": [
+      {"text": "Puh, jeg bliver træt og skal hvile. Det var rigtig dejligt at tale med dig. Vi ses snart!", "filename": "audio/goodbye1_da.mp3"},
+      {"text": "Åhh... jeg føler mig lidt svag. Tid til en pause. Til næste gang!", "filename": "audio/goodbye2_da.mp3"},
+      {"text": "Jeg er standhaftig, men selv jeg har brug for en pause nogle gange. Farvel!", "filename": "audio/goodbye3_da.mp3"},
+      {"text": "Jeg svinger i vinden og indser, at jeg har brug for hvile. Jeg venter på dit næste besøg. Vi ses!", "filename": "audio/goodbye4_da.mp3"},
+      {"text": "Wow, brugt en del energi i dag. Jeg skal hvile nu. Farvel!", "filename": "audio/goodbye5_da.mp3"}
+    ],
+    "norwegian": [
+      {"text": "Puh, jeg blir trøtt og må hvile. Det var veldig hyggelig å snakke med deg. Vi sees snart!", "filename": "audio/goodbye1_no.mp3"},
+      {"text": "Åhh... jeg føler meg litt svak. Tid for en pause. Til neste gang!", "filename": "audio/goodbye2_no.mp3"},
+      {"text": "Jeg er standhaftig, men selv jeg trenger en pause noen ganger. Ha det!", "filename": "audio/goodbye3_no.mp3"},
+      {"text": "Jeg svaier i vinden og innser at jeg trenger hvile. Jeg venter på ditt neste besøk. Vi sees da!", "filename": "audio/goodbye4_no.mp3"},
+      {"text": "Wow, brukt ganske mye energi i dag. Jeg må hvile nå. Farvel!", "filename": "audio/goodbye5_no.mp3"}
+    ],
+    "finnish": [
+      {"text": "Huh, väsyn ja minun täytyy levätä. Oli todella mukavaa jutella kanssasi. Nähdään pian!", "filename": "audio/goodbye1_fi.mp3"},
+      {"text": "Ohhh... tunnen itseni hieman heikoksi. Aika pitää tauko. Ensi kertaan!", "filename": "audio/goodbye2_fi.mp3"},
+      {"text": "Olen vakaa, mutta minäkin tarvitsen tauon joskus. Heippa!", "filename": "audio/goodbye3_fi.mp3"},
+      {"text": "Huojun tuulessa ja huomaan, että tarvitsen lepoa. Odotan seuraavaa vierailuasi. Nähdään sitten!", "filename": "audio/goodbye4_fi.mp3"},
+      {"text": "Vau, käytin aika paljon energiaa tänään. Minun täytyy levätä nyt. Näkemiin!", "filename": "audio/goodbye5_fi.mp3"}
+    ],
+    "turkish": [
+      {"text": "Puh, yoruluyorum ve dinlenmem gerekiyor. Seninle konuşmak çok güzeldi. Yakında görüşürüz!", "filename": "audio/goodbye1_tr.mp3"},
+      {"text": "Ohhh... kendimi biraz zayıf hissediyorum. Mola zamanı. Bir dahaki sefere!", "filename": "audio/goodbye2_tr.mp3"},
+      {"text": "Ben sağlamım ama bazen benim de molaya ihtiyacım oluyor. Hoşça kal!", "filename": "audio/goodbye3_tr.mp3"},
+      {"text": "Rüzgarda sallanıyorum ve dinlenmeye ihtiyacım olduğunu fark ediyorum. Bir sonraki ziyaretini bekleyeceğim. Görüşürüz!", "filename": "audio/goodbye4_tr.mp3"},
+      {"text": "Vay, bugün epey enerji harcadım. Şimdi dinlenmem gerekiyor. Güle güle!", "filename": "audio/goodbye5_tr.mp3"}
+    ],
+    "polish": [
+      {"text": "Uff, robię się zmęczony i muszę odpocząć. Bardzo się ucieszyłem rozmawiając z tobą. Do zobaczenia wkrótce!", "filename": "audio/goodbye1_pl.mp3"},
+      {"text": "Ohhh... czuję się trochę słaby. Czas na przerwę. Do następnego razu!", "filename": "audio/goodbye2_pl.mp3"},
+      {"text": "Jestem niezłomny, ale nawet ja czasem potrzebuję odpoczynku. Pa!", "filename": "audio/goodbye3_pl.mp3"},
+      {"text": "Kołyszę się na wietrze i zdaję sobie sprawę, że potrzebuję odpoczynku. Będę czekał na twoją następną wizytę. Do zobaczenia!", "filename": "audio/goodbye4_pl.mp3"},
+      {"text": "Wow, sporo energii zużyłem dziś. Muszę teraz odpocząć. Do widzenia!", "filename": "audio/goodbye5_pl.mp3"}
+    ],
+    "hindi": [
+      {"text": "फ्यू, मैं थक रहा हूं और मुझे आराम करना है। आपसे बात करके बहुत अच्छा लगा। जल्द मिलते हैं!", "filename": "audio/goodbye1_hi.mp3"},
+      {"text": "ओह... मैं थोड़ा कमजोर महसूस कर रहा हूं। आराम का समय है। अगली बार मिलते हैं!", "filename": "audio/goodbye2_hi.mp3"},
+      {"text": "मैं दृढ़ हूं, लेकिन कभी-कभी मुझे भी आराम की जरूरत होती है। अलविदा!", "filename": "audio/goodbye3_hi.mp3"},
+      {"text": "मैं हवा में झूल रहा हूं और महसूस कर रहा हूं कि मुझे आराम की जरूरत है। मैं आपकी अगली यात्रा का इंतजार करूंगा। फिर मिलेंगे!", "filename": "audio/goodbye4_hi.mp3"},
+      {"text": "वाह, आज काफी ऊर्जा खर्च की। मुझे अब आराम करना है। अलविदा!", "filename": "audio/goodbye5_hi.mp3"}
+    ],
+    "bengali": [
+      {"text": "হুহ, আমি ক্লান্ত হয়ে যাচ্ছি এবং আমার বিশ্রাম দরকার। আপনার সাথে কথা বলে খুব ভালো লাগলো। শীঘ্রই দেখা হবে!", "filename": "audio/goodbye1_bn.mp3"},
+      {"text": "ওহ... আমি কিছুটা দুর্বল বোধ করছি। বিশ্রামের সময়। পরের বার দেখা হবে!", "filename": "audio/goodbye2_bn.mp3"},
+      {"text": "আমি দৃঢ়, তবে মাঝে মাঝে আমারও বিশ্রামের প্রয়োজন। বিদায়!", "filename": "audio/goodbye3_bn.mp3"},
+      {"text": "আমি বাতাসে দুলছি এবং বুঝতে পারছি যে আমার বিশ্রাম দরকার। আমি আপনার পরবর্তী সফরের অপেক্ষায় থাকব। তাহলে দেখা হবে!", "filename": "audio/goodbye4_bn.mp3"},
+      {"text": "বাহ, আজ বেশ শক্তি খরচ হয়েছে। এখন আমার বিশ্রাম নিতে হবে। বিদায়!", "filename": "audio/goodbye5_bn.mp3"}
+    ]
+  }
+}
