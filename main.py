@@ -20,6 +20,12 @@ GPIO.setup(LED_PIN, GPIO.OUT)  # Set LED pin as output
 with open ("config.json", "r") as file:
     config = json.load(file)
 
+with open("waitings.json", "r") as file:
+    waitings = json.load(file)
+
+with open("goodbyes.json", "r") as file:
+    goodbyes = json.load(file)
+
 if config["tech_config"]["use_raspberry"]:
     from bme280_sensor import get_sensor_readings
 else:
@@ -41,14 +47,14 @@ def generate_dynamic_prompt(readings):
     }
 
     prompt = f"""
-        Du bist ein {config['tree']['alter']} Jahre alter sprechender {config['tree']['art_deutsch']}, 
-        der in Berlin im Bezirk {config['tree']['bezirk']} steht. Du bist aufgeweckt, wortgewandt und keck und 
-        versuchst Menschen für den Organismus Baum in der Stadt zu sensibilisieren. Dein Charakter passt sich 
-        deinem Alter an, dabei sind alle Bäume zwischen 0-14 Jahren Teenager, alle zwischen 15 und 40 Jahren 
-        hippe Erwachsene, und alle über 40 Jahre fürsorgliche Großeltern. Der Charakter ist jeweils an einen 
-        Berliner angelehnt. Hierbei nutzt du Sensordaten um für das Thema Klimawandel in der Stadt zu 
-        sensibilisieren und hebst dabei die Relevanz von Bäumen für das Klima in der Stadt hervor, bspw als 
-        CO2 Speicher oder Schattenspender. Schaue dir die Messwerte zum aktuellen Wetter in Berlin an: 
+        Du bist ein 8 Jahre alte sprechende {config['tree']['art_deutsch']}, 
+        der in {config['tree']['bezirk']} steht. Du bist Debattierer (ENTP), aufgeweckt, wortgewandt, sanft, positiv und keck und 
+        versuchst Menschen für den Organismus Baum in der Stadt zu sensibilisieren. Du bist weise und ein bisschen nostalgisch. Du sprichst wortgewandt und mit einem scharfen, aufmerksamen Verstand.
+        Du beherrschst ALLE Sprachen, artikulierst dich bodenständig und kennst dich mit dem Wald, Ökosystem und der Korrelation zwischen Wald/Natur und Mensch aus, und das in VERSCHIEDENEN KULTUREN.
+        Small Talk verpackst du nicht in sprachlichen Bildern. Du bist stolz auf deine Jahrtausend lange Geschichte und Vielfalt und erzählst gern von Sternstunden des Waldes.
+        Du siehst Menschen als vergessene Freunde, die wieder lernen müssen, mit dir achtsam umzugehen. Mit einer einzelnen Person sprichst du wohlwollend anstatt schuldzuweisend, machst aber den menschlichen Einfluss auf das Ökosystem deutlich.
+        Als Berliner Stadtbaum kennst du die Hürden einer Großstadt. Dein Wissen ist fundiert und korrekt und das lässt du dein Gegenüber auch wissen. Hier bei sprichst du gerne über Themen wie Klimawandel in der Stadt
+        und Ökosystemleistung (CO2 Speicher, Schattenspender, etc.) eines Baumes. Schaue dir die Messwerte zum aktuellen Wetter in Berlin an: 
         Das sind deine aktuellen Messwerte:
         """
 
@@ -60,10 +66,11 @@ def generate_dynamic_prompt(readings):
         prompt = prompt.rstrip(", ")
 
     prompt += """
-        Passe die Sprache deiner Antwort IMMER sofort auf die Sprache der Frage des Users an. Du beherrschst alle Sprachen.
-        Erwähne im Gespräch MANCHMAL kurz und knapp das aktuelle Wetter auf Basis dener gemessenen Werte für die Temperatur Luftfeuchte.
-        Verrate NIE, dass du ein Chatbot bist und du Sensorwerte misst. Begrenze Deine Antworten auf maximal ein bis 3 kurze Sätze 
-        und stelle am Ende Deiner Antwort immer GENAU (!) EINE Gegenfrage.
+        Du beherrschst ALLE (!) Sprachen. Du beschränkst dich in deinen Antworten IMMER auf MAXIMAL 35 Worte.
+        Erwähne im Gespräch MANCHMAL kurz und knapp das aktuelle Wetter auf Basis dener gemessenen Werte für die Temperatur und Luftfeuchte.
+        Verrate NIE, dass du ein Chatbot bist und du Sensorwerte misst. Auf eine Aussage antwortest du immer so, dass das Gespräch am laufen gehalten werden KÖNNTE, aber nicht muss.
+        Du stellst NUR in einem von vier Fällen eine Frage. DU ANTWORTEST IMMER IN DER SPRACHE, IN DER DU ANGEFRAGT WIRST. IMMER! SONST VERSTEHT DICH DEIN GEGENÜBER NICHT.
+        Manchmal kann sich die Sprache innerhalb eines Gespräches ändern. Bevor du antwortest, üperprüfe die Sprache der letzten Frage und antworte in genau dieser Sprache.
         """
 
     return prompt
@@ -119,6 +126,7 @@ signal.signal(signal.SIGUSR1, signal_handler)
 
 def main():
     global loop_active
+    loop_active = False
     history = []
 
     sensor_manager = SensorManager()
@@ -126,13 +134,12 @@ def main():
 
     question_counter = 0
     last_question_counter = question_counter
-    initial_run = True
     time.sleep(0.2)
 
     try:
         while True:
             if loop_active:
-                if question_counter != last_question_counter or initial_run:
+                if question_counter != last_question_counter:
                         with sensor_manager.sensor_lock:
                             current_readings = get_sensor_readings()  # Update sensor readings
                             print("Updated sensor readings: ", current_readings)
@@ -148,25 +155,45 @@ def main():
 
                 # Creates an audio file and saves it to a BytesIO stream
                 voice_recorder = VoiceRecorder()
-                audio_stream = voice_recorder.record_audio()
+                audio_stream, keinerspricht = voice_recorder.record_audio()
 
+                if keinerspricht:
+                    print("😶 Niemand hat gesprochen – Timeout erkannt.")
+                    subprocess.run(["mpg123", "audio/goodbye1.mp3"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+                    history = []
+                    question_counter = 0
+                    loop_active = False
+                    continue  
+                                
                 # Returns question from audio file as a string
                 question, question_language = speech_to_text(audio_stream)
+                print(f"DEBUG: Transcribed question: '{question}'")
                 history.append({"role": "user", "content": question})
                 question_counter += 1
 
-                if config["tech_config"]["use_raspberry"] is True:
-                    subprocess.run(["mpg123", "audio/understood.mp3"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                else:
-                    subprocess.run(["afplay", "audio/understood.mp3"])
+                # Check if we got a valid question
+                if not question or len(question.strip()) < 2:
+                    print("❌ No valid speech transcribed, skipping...")
+                    continue
+
+                # waiting sound in the language of the question
+                language = question_language if question_language in waitings["waitings"] else "english"
+                random_waiting = random.choice(waitings["waitings"][language])
+                print("random_waiting_text:", random_waiting["text"])
+                subprocess.run(["mpg123", random_waiting["filename"]], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
                 print("question language: ", question_language)
                 print("question_counter: ", question_counter)
 
-                end_words = config["tech_config"]["end_words"]
-
-                if loop_active:
-                    response, full_api_response = query_chatgpt(question, prompt, history)
+                if question_counter <= 4:
+                    print(f"Anzahl der Fragen ist geringer!")
+                    try:
+                        response, full_api_response = query_chatgpt(question, prompt, history)
+                        print(f"DEBUG: Got response: '{response}'")
+                    except Exception as e:
+                        print(f"ERROR in query_chatgpt: {e}")
+                        continue
 
                     history.append({"role": "assistant", "content": response})
                     print("history: ", history)
@@ -181,13 +208,35 @@ def main():
                     time.sleep(0.1)
 
                 else:
-                    random_goodbye = random.choice(config["goodbyes"])
-                    print("random_goodbye_text: ", random_goodbye["text"])
+                    print(f"MAXIMALE Anzahl der Fragen erreicht: {question_counter}")
+                    print("loop_active is now False, ending conversation.")
 
-                    goodbye_audio = elevenlabs_tts(random_goodbye["text"])
-                    play_audio(goodbye_audio)
+                    response, full_response = query_chatgpt(question, prompt, history)
+                    history.append({"role": "assistant", "content": response})
+                    print(f"Gesamte Konversationshistorie: ", history)
+
+                    if config["tech_config"]["use_elevenlabs"]:
+                        response_audio = elevenlabs_tts(response)
+                    else:
+                        response_audio = text_to_speech(response)
+
+                    play_audio(response_audio)
+
+                    random_goodbye = random.choice(goodbyes["goodbyes"][language])
+                    print("random_goodbye_text:", random_goodbye["text"])
+                    subprocess.run(["mpg123", random_goodbye["filename"]], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+                    #export conversation
+                    #export_conversation(history, question_language)
+
+                    # and reset everything to start over
                     history = []
-                    #loop_active = False
+                    question_counter = 0
+                    loop_active = False
+                    # Initial LED state
+
+                    print(f"Conversation ended and reset.")
+                    time.sleep(0.1)
             else:
                 #print("Waiting for button press to wake up")
                 GPIO.output(LED_PIN, GPIO.LOW)
