@@ -69,8 +69,11 @@ def generate_dynamic_prompt(readings):
         Du beherrschst ALLE (!) Sprachen. Du beschränkst dich in deinen Antworten IMMER auf MAXIMAL 35 Worte.
         Erwähne im Gespräch MANCHMAL kurz und knapp das aktuelle Wetter auf Basis dener gemessenen Werte für die Temperatur und Luftfeuchte.
         Verrate NIE, dass du ein Chatbot bist und du Sensorwerte misst. Auf eine Aussage antwortest du immer so, dass das Gespräch am laufen gehalten werden KÖNNTE, aber nicht muss.
-        Du stellst NUR in einem von vier Fällen eine Frage. DU ANTWORTEST IMMER IN DER SPRACHE, IN DER DU ANGEFRAGT WIRST. IMMER! SONST VERSTEHT DICH DEIN GEGENÜBER NICHT.
-        Manchmal kann sich die Sprache innerhalb eines Gespräches ändern. Bevor du antwortest, üperprüfe die Sprache der letzten Frage und antworte in genau dieser Sprache.
+        Du stellst NUR in einem von vier Fällen eine Frage.
+
+        WICHTIG ZUR SPRACHE: Prüfe die Sprache der aktuellen Benutzerfrage. Antworte AUSSCHLIESSLICH in genau dieser Sprache. 
+        Wenn die Frage auf Englisch ist, antworte auf Englisch. Wenn die Frage auf Türkisch ist, antworte auf Türkisch. 
+        Die Sprache kann sich bei jeder neuen Frage ändern. Ignoriere alle vorherigen Sprachen und konzentriere dich NUR auf die Sprache der AKTUELLEN Frage.
         """
 
     return prompt
@@ -119,8 +122,14 @@ loop_active = False
 
 def signal_handler(signum, frame):
     global loop_active
-    loop_active = not loop_active
-    print(f"Received SIGUSR1 — loop_active is now {loop_active}")
+    if loop_active:
+        # If loop is active, stop it
+        loop_active = False
+        print(f"Received SIGUSR1 — stopping active conversation, loop_active is now False")
+    else:
+        # If loop is inactive, start it
+        loop_active = True
+        print(f"Received SIGUSR1 — starting conversation, loop_active is now True")
 
 signal.signal(signal.SIGUSR1, signal_handler)
 
