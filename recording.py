@@ -43,7 +43,7 @@ class VoiceRecorder:
         threshold = self.ambient_threshold
         print("Listening for speech...")
 
-        timeout_seconds = 10
+        timeout_seconds = 30
         start_time = time.time()
         keinerspricht = False
 

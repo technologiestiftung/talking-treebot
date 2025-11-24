@@ -4,6 +4,7 @@ from bme280 import BME280
 # BME280 Sensor initialisieren
 bus = smbus2.SMBus(1)
 bme280 = BME280(i2c_dev=bus)
+bme280 = BME280(i2c_dev=bus, i2c_addr=0x76) # use `sudo i2cdetect -y 1` to find the address
 
 # Sensormesswerte erfassen und formatieren
 def get_sensor_readings():

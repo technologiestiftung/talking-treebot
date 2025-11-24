@@ -150,7 +150,7 @@ def main():
             if loop_active:
                 if question_counter != last_question_counter:
                         with sensor_manager.sensor_lock:
-                            current_readings = get_sensor_readings()  # Update sensor readings
+                            current_readings = sensor_manager.sensor_readings  # Use cached readings
                             print("Updated sensor readings: ", current_readings)
                         prompt = generate_dynamic_prompt(current_readings)
                         
